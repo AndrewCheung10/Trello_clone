@@ -62,7 +62,7 @@ const initialState = {
                 {
                     id: "6",
                     title: "C",
-                    description: "First element after sorting",
+                    description: "",
                     favourite: false,
                     dueDate: "2022-01-01 12:30",
                     complete: true,
@@ -70,7 +70,7 @@ const initialState = {
                 {
                     id: "5",
                     title: "B",
-                    description: "",
+                    description: "First element after sorting",
                     favourite: true,
                     dueDate: "2022-09-01 06:30",
                     complete: false,
