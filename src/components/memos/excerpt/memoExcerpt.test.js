@@ -5,49 +5,27 @@ import { BrowserRouter } from "react-router-dom";
 import MemoExcerpt from "./MemoExcerpt";
 import { DragDropContext } from "react-beautiful-dnd";
 import { Droppable } from "react-beautiful-dnd";
-import { fireEvent, screen, render } from "@testing-library/react";
+import { screen, render } from "@testing-library/react";
 import { createMemoryHistory } from "history";
+import { renderWithDnD } from "./../../../testUtils/renderWithDnD";
+import { DragWrapper } from "../../../testUtils/DnDWrapper";
 
 describe("MemoExcerpt", () => {
-    const drop = (component) => {
-        return (
-            <DragDropContext>
-                <Droppable
-                    droppableId="home"
-                    type="category"
-                    direction="horizontal"
-                >
-                    {(provided) => (
-                        <div
-                            ref={provided.innerRef}
-                            {...provided.droppableProps}
-                        >
-                            {component}
-                        </div>
-                    )}
-                </Droppable>
-            </DragDropContext>
-        );
-    };
-
     const setup = (data) => {
         const id = nanoid();
         const memoIndex = 0;
-        const history = createMemoryHistory();
 
-        render(
-            <Provider store={store}>
-                <BrowserRouter history={history}>
-                    {drop(
-                        <MemoExcerpt
-                            data={data}
-                            categoryId={id}
-                            memoIndex={memoIndex}
-                        />
-                    )}
-                </BrowserRouter>
-            </Provider>
+        renderWithDnD(
+            DragWrapper(
+                <MemoExcerpt
+                    data={data}
+                    categoryId={id}
+                    memoIndex={memoIndex}
+                />
+            )
         );
+
+        return { id, memoIndex };
     };
 
     const createData = (newData) => {
@@ -124,17 +102,14 @@ describe("MemoExcerpt", () => {
             testFavourite(false));
     });
 
-    // describe("Navigation", () => {
-    //     it("Navigate to edit page", () => {
-    //         setup({});
-    //         const id = "123";
-    //         const memoIndex = "1";
-    //         const history = createMemoryHistory();
-    //         fireEvent.click(screen.getByLabelText("Link"));
+    describe("Navigation", () => {
+        it("Navigate to edit page", async () => {
+            const { id, memoIndex } = setup({});
 
-    //         expect(history.location.pathname).toBe(
-    //             `memo/${id}/${memoIndex}/edit`
-    //         );
-    //     });
-    // });
+            const link = screen.getByRole("link");
+            expect(link.getAttribute("href")).toBe(
+                `/memo/${id}/${memoIndex}/edit`
+            );
+        });
+    });
 });
