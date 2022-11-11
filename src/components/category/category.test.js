@@ -1,41 +1,18 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import { store } from "../../app/store";
 import Category from "./Category";
-import { BrowserRouter } from "react-router-dom";
-import { Provider } from "react-redux";
-import { DragDropContext } from "react-beautiful-dnd";
-import { Droppable } from "react-beautiful-dnd";
+import { renderWithDnD } from "./../../testUtils/renderWithDnD";
 
 describe("Category", () => {
     const testByIndex = (index) => {
         const categoryId = store.getState().memos.categoryIds[index];
         const category = store.getState().memos.categories[categoryId];
-
-        render(
-            <Provider store={store}>
-                <BrowserRouter>
-                    <DragDropContext>
-                        <Droppable
-                            droppableId="home"
-                            type="category"
-                            direction="horizontal"
-                        >
-                            {(provided) => (
-                                <div
-                                    ref={provided.innerRef}
-                                    {...provided.droppableProps}
-                                >
-                                    <Category
-                                        category={category}
-                                        categoryId={categoryId}
-                                        index={index}
-                                    />
-                                </div>
-                            )}
-                        </Droppable>
-                    </DragDropContext>
-                </BrowserRouter>
-            </Provider>
+        renderWithDnD(
+            <Category
+                category={category}
+                categoryId={categoryId}
+                index={index}
+            />
         );
 
         const memo = screen.queryAllByLabelText("Memo");

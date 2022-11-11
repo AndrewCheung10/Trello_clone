@@ -8,42 +8,35 @@ describe("Due Date Card show correct date format and background color", () => {
     const tmr = new Date().setDate(today.getDate() + 1);
     const yesterday = new Date().setDate(today.getDate() - 100);
 
-    it("complete and not expired", () => {
-        render(<DueDateCard dueDate={tmr} complete={true} />);
+    const setup = (dueDate, complete) => {
+        render(<DueDateCard dueDate={dueDate} complete={complete} />);
         const card = screen.getByLabelText("Card");
-        const date = moment(tmr).format("ll");
+        const date = moment(dueDate).format("ll");
         const styles = getComputedStyle(card);
 
+        return { card, date, styles };
+    };
+
+    it("complete and not expired", () => {
+        const { card, date, styles } = setup(tmr, true);
         expect(card.innerHTML).toEqual(date);
         expect(styles.backgroundColor).toBe(hexToRgb("#7bc86c"));
     });
 
     it("complete and expired", () => {
-        render(<DueDateCard dueDate={yesterday} complete={true} />);
-        const card = screen.getByLabelText("Card");
-        const date = moment(yesterday).format("ll");
-        const styles = getComputedStyle(card);
-
+        const { card, date, styles } = setup(yesterday, true);
         expect(card.innerHTML).toEqual(date);
         expect(styles.backgroundColor).toBe(hexToRgb("#7bc86c"));
     });
 
     it("not completed and not expired", () => {
-        render(<DueDateCard dueDate={tmr} complete={false} />);
-        const card = screen.getByLabelText("Card");
-        const date = moment(tmr).format("ll");
-        const styles = getComputedStyle(card);
-
+        const { card, date, styles } = setup(tmr, false);
         expect(card.innerHTML).toEqual(date);
         expect(styles.backgroundColor).toBe(hexToRgb("#7bc86c"));
     });
 
     it("not completed and expired", () => {
-        render(<DueDateCard dueDate={yesterday} complete={false} />);
-        const card = screen.getByLabelText("Card");
-        const date = moment(yesterday).format("ll");
-        const styles = getComputedStyle(card);
-
+        const { card, date, styles } = setup(yesterday, false);
         expect(card.innerHTML).toEqual(date);
         expect(styles.backgroundColor).toBe(hexToRgb("#EC8488"));
     });
