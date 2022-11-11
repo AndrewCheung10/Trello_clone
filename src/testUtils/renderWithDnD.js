@@ -4,6 +4,8 @@ import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { DragWrapper, DropWrapper } from "./DnDWrapper";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 
 export const renderWithDnD = (
     ui,
@@ -19,9 +21,11 @@ export const renderWithDnD = (
     function Wrapper({ children }) {
         return (
             <Provider store={store}>
-                <BrowserRouter>
-                    {isDrag ? DragWrapper(children) : DropWrapper(children)}
-                </BrowserRouter>
+                <LocalizationProvider dateAdapter={AdapterMoment}>
+                    <BrowserRouter>
+                        {isDrag ? DragWrapper(children) : DropWrapper(children)}
+                    </BrowserRouter>
+                </LocalizationProvider>
             </Provider>
         );
     }
