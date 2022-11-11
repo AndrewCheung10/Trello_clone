@@ -5,7 +5,8 @@ import { BrowserRouter } from "react-router-dom";
 import MemoExcerpt from "./MemoExcerpt";
 import { DragDropContext } from "react-beautiful-dnd";
 import { Droppable } from "react-beautiful-dnd";
-import { screen, render } from "@testing-library/react";
+import { fireEvent, screen, render } from "@testing-library/react";
+import { createMemoryHistory } from "history";
 
 describe("MemoExcerpt", () => {
     const drop = (component) => {
@@ -32,10 +33,11 @@ describe("MemoExcerpt", () => {
     const setup = (data) => {
         const id = nanoid();
         const memoIndex = 0;
+        const history = createMemoryHistory();
 
         render(
             <Provider store={store}>
-                <BrowserRouter>
+                <BrowserRouter history={history}>
                     {drop(
                         <MemoExcerpt
                             data={data}
@@ -69,10 +71,7 @@ describe("MemoExcerpt", () => {
             expect(title.textContent).toBe(text);
         };
 
-        it("1", () => testTitle("132"));
-        it("2", () => testTitle("asdf"));
-        it("3", () => testTitle("sadf132"));
-        it("4", () => testTitle("132sadfas$T*("));
+        it("Show title", () => testTitle("132"));
     });
 
     describe("dueDate", () => {
@@ -86,8 +85,9 @@ describe("MemoExcerpt", () => {
             else expect(dueDateCard).toBe(null);
         };
 
-        it("1", () => testDueDate("2022-12-25 16:39"));
-        it("2", () => testDueDate());
+        it("Show due date card if it's not null", () =>
+            testDueDate("2022-12-25 16:39"));
+        it("Dont't Show due date card if it's null", () => testDueDate());
     });
 
     describe("description", () => {
@@ -101,8 +101,10 @@ describe("MemoExcerpt", () => {
             else expect(description).toBe(null);
         };
 
-        it("1", () => testDescription("132"));
-        it("2", () => testDescription());
+        it("Show description icon if it's not empty", () =>
+            testDescription("132"));
+        it("Don't show description icon if it's empty", () =>
+            testDescription());
     });
 
     describe("favourite", () => {
@@ -116,7 +118,23 @@ describe("MemoExcerpt", () => {
             else expect(favourite).toBe(null);
         };
 
-        it("1", () => testFavourite(true));
-        it("2", () => testFavourite(false));
+        it("Show favourite icon if favourite is true", () =>
+            testFavourite(true));
+        it("Don't show favourite icon if favourite is false", () =>
+            testFavourite(false));
     });
+
+    // describe("Navigation", () => {
+    //     it("Navigate to edit page", () => {
+    //         setup({});
+    //         const id = "123";
+    //         const memoIndex = "1";
+    //         const history = createMemoryHistory();
+    //         fireEvent.click(screen.getByLabelText("Link"));
+
+    //         expect(history.location.pathname).toBe(
+    //             `memo/${id}/${memoIndex}/edit`
+    //         );
+    //     });
+    // });
 });

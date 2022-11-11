@@ -45,6 +45,7 @@ let MemoExcerpt = ({ data, categoryId, memoIndex }) => {
                             to={`memo/${categoryId}/${memoIndex}/edit`}
                             state={{ background: location }}
                             className={classes.linkToEdit}
+                            aria-label="Link"
                         >
                             <Card className={classes.card}>
                                 <p aria-label="Title" className={classes.title}>
