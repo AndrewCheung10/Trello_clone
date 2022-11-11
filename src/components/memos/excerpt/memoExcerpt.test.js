@@ -1,6 +1,6 @@
 import { nanoid } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
-import { setupStore } from "../../../app/store";
+import { store } from "../../../app/store";
 import { BrowserRouter } from "react-router-dom";
 import MemoExcerpt from "./MemoExcerpt";
 import { DragDropContext } from "react-beautiful-dnd";
@@ -32,7 +32,6 @@ describe("MemoExcerpt", () => {
     const setup = (data) => {
         const id = nanoid();
         const memoIndex = 0;
-        const store = setupStore();
 
         render(
             <Provider store={store}>

@@ -1,13 +1,16 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import memosReducer from "../redux/memosSlice";
+import { loadState, saveState } from "./localStorage";
 
-const rootReducer = combineReducers({
+const reducer = {
     memos: memosReducer,
+};
+
+export const store = configureStore({
+    reducer,
+    preloadedState: loadState(),
 });
 
-export const setupStore = (preloadedState) => {
-    return configureStore({
-        reducer: rootReducer,
-        preloadedState,
-    });
-};
+store.subscribe(() => {
+    saveState(store.getState());
+});

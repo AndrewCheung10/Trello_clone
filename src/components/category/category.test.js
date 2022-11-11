@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { setupStore } from "../../app/store";
+import { store } from "../../app/store";
 import Category from "./Category";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
@@ -8,7 +8,6 @@ import { Droppable } from "react-beautiful-dnd";
 
 describe("Category", () => {
     const testByIndex = (index) => {
-        const store = setupStore();
         const categoryId = store.getState().memos.categoryIds[index];
         const category = store.getState().memos.categories[categoryId];
 
