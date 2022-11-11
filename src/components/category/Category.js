@@ -24,7 +24,7 @@ const useStyle = makeStyles((theme) => ({
     },
 }));
 
-let MemosList = ({ category, categoryId, index }) => {
+let Category = ({ category, categoryId, index }) => {
     const classes = useStyle();
 
     return (
@@ -71,6 +71,6 @@ let MemosList = ({ category, categoryId, index }) => {
     );
 };
 
-let memoizedMemosList = React.memo(MemosList);
+let memoizedCategory = React.memo(Category);
 
-export default memoizedMemosList;
+export default memoizedCategory;

@@ -3,7 +3,7 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { useDispatch, useSelector } from "react-redux";
 import { selectAllMemos, swapMemo, swapCategory } from "../redux/memosSlice";
 
-import MemosList from "./list/MemosList";
+import Category from "./category/Category";
 import InputContainer from "./input/InputContainer";
 import { makeStyles } from "@material-ui/core/styles";
 import { useCallback } from "react";
@@ -59,7 +59,7 @@ const Home = () => {
                         >
                             {data.categoryIds.map((categoryId, index) => (
                                 <div key={categoryId} aria-label="Category">
-                                    <MemosList
+                                    <Category
                                         category={data.categories[categoryId]}
                                         categoryId={categoryId}
                                         index={index}
