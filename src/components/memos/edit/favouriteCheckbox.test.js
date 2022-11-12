@@ -1,89 +1,58 @@
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import FavouriteCheckbox from "./FavouriteCheckbox";
 import "@testing-library/jest-dom/extend-expect";
 
 describe("Favourite check box", () => {
+    const setFavourite = jest.fn();
+
     beforeEach(() => {
-        jest.clearAllMocks();
+        setFavourite.mockClear();
     });
+
+    const setup = (favourite) => {
+        render(
+            <FavouriteCheckbox
+                favourite={favourite}
+                setFavourite={setFavourite}
+            />
+        );
+        const checkbox = screen.getByLabelText("Favourite Checkbox");
+        const favouriteIcon = screen.queryByLabelText("Favorite Icon");
+        const favoriteBorderIcon = screen.queryByLabelText(
+            "Favorite Border Icon"
+        );
+        return { checkbox, favouriteIcon, favoriteBorderIcon };
+    };
+
     describe("Shows correct checking", () => {
         it("Default false and show favourite border icon", () => {
-            let favourite = false;
-            const mockFunction = jest.fn();
-
-            render(
-                <FavouriteCheckbox
-                    favourite={favourite}
-                    setFavourite={mockFunction}
-                />
-            );
-
-            const checkbox = screen.getByLabelText("Favourite Checkbox");
+            const { checkbox, favouriteIcon, favoriteBorderIcon } =
+                setup(false);
 
             expect(checkbox.checked).toBe(false);
-
-            const favoriteBorderIcon = screen.getByLabelText(
-                "Favorite Border Icon"
-            );
             expect(favoriteBorderIcon).toBeInTheDocument();
-
-            const favouriteIcon = screen.queryByLabelText("Favorite Icon");
             expect(favouriteIcon).toBe(null);
         });
         it("Default true and show favourite icon", () => {
-            let favourite = true;
-            const mockFunction = jest.fn();
-
-            render(
-                <FavouriteCheckbox
-                    favourite={favourite}
-                    setFavourite={mockFunction}
-                />
-            );
-
-            const checkbox = screen.getByLabelText("Favourite Checkbox");
+            const { checkbox, favouriteIcon, favoriteBorderIcon } = setup(true);
 
             expect(checkbox.checked).toBe(true);
-
-            const favoriteIcon = screen.getByLabelText("Favorite Icon");
-            expect(favoriteIcon).toBeInTheDocument();
-
-            const favouriteBorderIcon = screen.queryByLabelText(
-                "Favorite Border Icon"
-            );
-            expect(favouriteBorderIcon).toBe(null);
+            expect(favouriteIcon).toBeInTheDocument();
+            expect(favoriteBorderIcon).toBe(null);
         });
     });
     describe("Change checkbox value", () => {
         it("Change checkbox from false to true", async () => {
-            let favourite = false;
-            const mockFunction = jest.fn();
-
-            render(
-                <FavouriteCheckbox
-                    favourite={favourite}
-                    setFavourite={mockFunction}
-                />
-            );
-
-            const checkbox = screen.getByLabelText("Favourite Checkbox");
-
+            const { checkbox } = setup(false);
             fireEvent.click(checkbox);
-            expect(mockFunction).toHaveBeenCalledWith(true);
+            expect(setFavourite).toBeCalledTimes(1);
+            expect(setFavourite).toHaveBeenCalledWith(true);
         });
         it("change checkbox from true to false", async () => {
-            let favourite = true;
-            const mockFunction = jest.fn();
-            render(
-                <FavouriteCheckbox
-                    favourite={favourite}
-                    setFavourite={mockFunction}
-                />
-            );
-            const checkbox = screen.getByLabelText("Favourite Checkbox");
-
+            const { checkbox } = setup(true);
             fireEvent.click(checkbox);
-            expect(mockFunction).toHaveBeenCalledWith(false);
+            expect(setFavourite).toBeCalledTimes(1);
+            expect(setFavourite).toHaveBeenCalledWith(false);
         });
     });
 });

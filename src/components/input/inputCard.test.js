@@ -6,8 +6,10 @@ import { addMemo, addCategory } from "../../redux/memosSlice";
 import "@testing-library/jest-dom/extend-expect";
 
 describe("InputCard", () => {
+    const setOpen = jest.fn();
+
     beforeEach(() => {
-        jest.clearAllMocks();
+        setOpen.mockClear();
     });
 
     const id = nanoid();
@@ -55,27 +57,26 @@ describe("InputCard", () => {
 
     describe("InputBase", () => {
         const setup = (btnLabel) => {
-            const mockFunction = jest.fn();
             renderWithProviders(
                 <InputCard
-                    setOpen={mockFunction}
+                    setOpen={setOpen}
                     categoryId={id}
                     type={cardType.memo}
                 />
             );
             const button = screen.getByLabelText(btnLabel);
 
-            return { mockFunction, button };
+            return { button };
         };
 
         it("Close on comfirm with empty", () => {
-            const { mockFunction, button } = setup("Submit Button");
+            const { button } = setup("Submit Button");
 
             fireEvent.click(button);
-            expect(mockFunction).toBeCalledTimes(0);
+            expect(setOpen).toBeCalledTimes(0);
         });
         it("Close on comfirm with not empty", () => {
-            const { mockFunction, button } = setup("Submit Button");
+            const { button } = setup("Submit Button");
             const inputBase = within(
                 screen.getByLabelText("Input Base")
             ).getByRole("textbox");
@@ -83,13 +84,15 @@ describe("InputCard", () => {
             fireEvent.change(inputBase, { target: { value: "text" } });
             fireEvent.click(button);
 
-            expect(mockFunction).toHaveBeenCalledWith(false);
+            expect(setOpen).toBeCalledTimes(1);
+            expect(setOpen).toHaveBeenCalledWith(false);
         });
         it("Close on cancel", () => {
-            const { mockFunction, button } = setup("Cancel Button");
+            const { button } = setup("Cancel Button");
 
             fireEvent.click(button);
-            expect(mockFunction).toHaveBeenCalledWith(false);
+            expect(setOpen).toBeCalledTimes(1);
+            expect(setOpen).toHaveBeenCalledWith(false);
         });
     });
 
