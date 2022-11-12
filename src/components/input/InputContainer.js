@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Paper, Typography } from "@material-ui/core";
 import { makeStyles, alpha } from "@material-ui/core/styles";
 import InputCard from "./InputCard";
+import ClickAwayListener from "@mui/base/ClickAwayListener";
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -52,9 +53,11 @@ const InputContainer = ({ categoryId, type }) => {
     };
 
     return (
-        <div className={classes.root}>
-            {open ? <ShowWhenOpen /> : <ShowWhenNotOpen />}
-        </div>
+        <ClickAwayListener onClickAway={() => setOpen(false)}>
+            <div className={classes.root}>
+                {open ? <ShowWhenOpen /> : <ShowWhenNotOpen />}
+            </div>
+        </ClickAwayListener>
     );
 };
 
