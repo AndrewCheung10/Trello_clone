@@ -1,4 +1,5 @@
 import Home from "./components/Home";
+import Layout from "./layout/Layout";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import EditMemoForm from "./components/memos/edit/EditMemoForm";
 function App() {
@@ -8,7 +9,8 @@ function App() {
     return (
         <div>
             <Routes location={background || location}>
-                <Route path="/" element={<Home />}>
+                <Route path="/" element={<Layout />}>
+                    <Route index element={<Home />} />
                     <Route
                         path=":categoryId/:memoIndex/edit"
                         element={<EditMemoForm />}
