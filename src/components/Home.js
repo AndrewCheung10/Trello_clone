@@ -44,7 +44,7 @@ const Home = () => {
         [dispatch]
     );
     return (
-        <div className={classes.root}>
+        <div className={classes.root} aria-label="Home">
             <DragDropContext onDragEnd={onDragEnd}>
                 <Droppable
                     droppableId="home"
