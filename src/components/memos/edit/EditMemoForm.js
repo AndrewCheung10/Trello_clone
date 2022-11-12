@@ -86,7 +86,7 @@ const EditMemoForm = () => {
     };
 
     return (
-        <div className="modalDiv">
+        <div className="modalDiv" aria-label="Edit Memo Form">
             <div className="modal">
                 <div className={classes.closeButton}>
                     <Button onClick={() => navigate("/")}>close</Button>
@@ -101,6 +101,7 @@ const EditMemoForm = () => {
                             />
                         </div>
                         <TextField
+                            aria-label="Title"
                             value={title}
                             onChange={onTitleChanged}
                             multiline
