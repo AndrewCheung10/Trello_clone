@@ -53,11 +53,9 @@ const InputContainer = ({ categoryId, type }) => {
     };
 
     return (
-        <ClickAwayListener onClickAway={() => setOpen(false)}>
-            <div className={classes.root}>
-                {open ? <ShowWhenOpen /> : <ShowWhenNotOpen />}
-            </div>
-        </ClickAwayListener>
+        <div className={classes.root}>
+            {open ? <ShowWhenOpen /> : <ShowWhenNotOpen />}
+        </div>
     );
 };
 
